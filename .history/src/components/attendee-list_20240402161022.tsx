@@ -14,13 +14,8 @@ dayjs.locale('pt-br');
 export function AttendeeList(){
   const [searchValue, setSearchValue] = useState('');
   const [page, setPage] = useState(1);
-  const totalPages = Math.ceil(attendees.length/10);
   function onSearchInputChanged(event:ChangeEvent<HTMLInputElement>){
     setSearchValue(event.target.value)
-  }
-  
-  function goToFirstPage(){
-    setPage(1)
   }
   function goToPreviousPage(){
     setPage(page-1)
@@ -29,8 +24,11 @@ export function AttendeeList(){
   function goToNextPage(){
     setPage(page+1)
   }
+  function goToFristPage(){
+    setPage(1)
+  }
   function goToLastPage(){
-    setPage(totalPages)
+    setPage(Math.ceil(attendees.length/10))
   }
   return(
     <div className="flex flex-col gap-4">
@@ -86,18 +84,18 @@ export function AttendeeList(){
               </TableCell>
               <TableCell className="text-right" colSpan={3}>
                 <div className="inline-flex items-center gap-8">
-                  <span>Pagina {page} de {totalPages}</span>
+                  <span>Pagina {page} de {Math.ceil(attendees.length/10)}</span>
                   <div className="flex gap-1.5">
-                    <IconButton onClick={goToFirstPage} disabled={page === 1}>
+                    <IconButton onClick={goToFirstPage}>
                       <ChevronsLeft className="size-4"/>
                     </IconButton>
-                    <IconButton onClick={goToPreviousPage} disabled={page === 1}>
+                    <IconButton onClick={goToPreviousPage}>
                       <ChevronLeft className="size-4"/>
                     </IconButton>
-                    <IconButton onClick={goToNextPage} disabled={page === totalPages}>
+                    <IconButton onClick={goToNextPage}>
                       <ChevronRight className="size-4"/>
                     </IconButton>
-                    <IconButton onClick={goToLastPage} disabled={page === totalPages}>
+                    <IconButton onClick={goToLastPage}>
                       <ChevronsRight className="size-4"/>
                     </IconButton>
                   </div>

@@ -94,10 +94,10 @@ export function AttendeeList(){
                     <IconButton onClick={goToPreviousPage} disabled={page === 1}>
                       <ChevronLeft className="size-4"/>
                     </IconButton>
-                    <IconButton onClick={goToNextPage} disabled={page === totalPages}>
+                    <IconButton onClick={goToNextPage}>
                       <ChevronRight className="size-4"/>
                     </IconButton>
-                    <IconButton onClick={goToLastPage} disabled={page === totalPages}>
+                    <IconButton onClick={goToLastPage}>
                       <ChevronsRight className="size-4"/>
                     </IconButton>
                   </div>
