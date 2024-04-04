@@ -18,7 +18,7 @@ interface Attendees{
   checkedInAt: string | null
 }
 export function AttendeeList(){
-  const [search, setSearch] = useState(()=>{
+  const [searchValue, setSearch] = useState(()=>{
     const url = new URL(window.location.toString())
     if (url.searchParams.has('search')) {
       return url.searchParams.get('search') ?? ""
@@ -39,8 +39,8 @@ export function AttendeeList(){
   useEffect(()=>{
     const url = new URL('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
     url.searchParams.set("pageIndex", String(page-1))
-    if (search.length > 0) {
-      url.searchParams.set("query", search)
+    if (searchValue.length > 0) {
+      url.searchParams.set("query", searchValue)
     }
     
     fetch(url)
@@ -49,7 +49,7 @@ export function AttendeeList(){
       setAttendees(data.attendees)
       setTotal(data.total)
     })
-  },[page, search])
+  },[page, searchValue])
   
   function setCurrentPage(page:number){
     const url = new URL(window.location.toString())

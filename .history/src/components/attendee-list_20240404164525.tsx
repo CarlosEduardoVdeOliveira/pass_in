@@ -18,13 +18,7 @@ interface Attendees{
   checkedInAt: string | null
 }
 export function AttendeeList(){
-  const [search, setSearch] = useState(()=>{
-    const url = new URL(window.location.toString())
-    if (url.searchParams.has('search')) {
-      return url.searchParams.get('search') ?? ""
-    }
-    return ""
-  });
+  const [searchValue, setSearchValue] = useState('');
   const [page, setPage] = useState(()=>{
     const url = new URL(window.location.toString())
     if (url.searchParams.has('page')) {
@@ -39,8 +33,8 @@ export function AttendeeList(){
   useEffect(()=>{
     const url = new URL('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
     url.searchParams.set("pageIndex", String(page-1))
-    if (search.length > 0) {
-      url.searchParams.set("query", search)
+    if (searchValue.length > 0) {
+      url.searchParams.set("query", searchValue)
     }
     
     fetch(url)
@@ -49,23 +43,22 @@ export function AttendeeList(){
       setAttendees(data.attendees)
       setTotal(data.total)
     })
-  },[page, search])
+  },[page, searchValue])
   
   function setCurrentPage(page:number){
     const url = new URL(window.location.toString())
     url.searchParams.set('page', String(page))
     window.history.pushState({}, "", url)
-    setPage(page)
   }
   function setCurrentSearch(search:string){
     const url = new URL(window.location.toString())
     url.searchParams.set('search', search)
     window.history.pushState({}, "", url)
-    setSearch(search)
+    setSearchValue(search)
   }
   const totalPages = Math.ceil(total/10);
   function onSearchInputChanged(event:ChangeEvent<HTMLInputElement>){
-    setCurrentSearch(event.target.value)
+    setSearchValue(event.target.value)
     setPage(1)
   }
   function goToFirstPage(){
@@ -87,7 +80,7 @@ export function AttendeeList(){
         <h1 className="text-2xl font-bold">Participantes</h1>
         <div className=" w-72 px-3 py-1.5 border border-white/10 rounded-lg flex items-center gap-3 text-sm">
           <Search className="size-4 text-emerald-300" />
-          <input value={search} onChange={onSearchInputChanged} className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0" type="search" placeholder="Buscar participante..."  />
+          <input onChange={onSearchInputChanged} className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0" type="search" placeholder="Buscar participante..."  />
         </div>
       </div>
       <Table className="border border-white/10 rounded-lg ">
